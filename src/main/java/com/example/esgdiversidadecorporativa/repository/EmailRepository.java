@@ -1,9 +1,10 @@
 package com.example.esgdiversidadecorporativa.repository;
 
+import com.example.esgdiversidadecorporativa.model.Email;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface EmployeeRepository extends JpaRepository<com.example.esgdiversidadecorporativa.model.Employee, Long> {
+public interface EmailRepository extends JpaRepository<EmailRepository, Long> {
 
 }
