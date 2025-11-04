@@ -1,7 +1,6 @@
 package com.example.esgdiversidadecorporativa.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -15,7 +14,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmailOutbox {
+public class Email {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "email_outbox_seq")
@@ -24,7 +23,7 @@ public class EmailOutbox {
     private Long id;
 
     @NotBlank(message = "Destinatário é obrigatório")
-    @Email(message = "Destinatário deve ser um email válido")
+    @jakarta.validation.constraints.Email(message = "Destinatário deve ser um email válido")
     @Column(name = "recipient", nullable = false, length = 150)
     private String recipient;
 
