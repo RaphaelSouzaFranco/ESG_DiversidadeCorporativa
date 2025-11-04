@@ -33,7 +33,7 @@ public class Email {
     private String subject;
 
     @NotBlank(message = "Corpo da mensagem é obrigatório")
-    @Column(name = "body", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "body", nullable = false, columnDefinition = "CLOB")
     private String body;
 
     @NotBlank(message = "Status é obrigatório")
