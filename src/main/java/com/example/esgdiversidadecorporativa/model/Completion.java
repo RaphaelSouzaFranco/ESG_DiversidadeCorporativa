@@ -16,7 +16,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Completion {
+public class Completion{
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "completion_seq")
