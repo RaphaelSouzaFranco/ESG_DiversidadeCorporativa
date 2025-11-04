@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DiversityReport {
+public class Diversity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "diversity_report_seq")
