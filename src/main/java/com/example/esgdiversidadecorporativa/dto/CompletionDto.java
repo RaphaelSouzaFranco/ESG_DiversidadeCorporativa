@@ -5,7 +5,7 @@ public class CompletionDto {
 
     @Data
     public class CompletionDTO {
-        private Long id;
+        private String id;
         private String result;
     }
 

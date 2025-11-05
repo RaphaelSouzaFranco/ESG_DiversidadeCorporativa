@@ -1,6 +1,6 @@
 package com.example.esgdiversidadecorporativa.controller;
 
-import com.example.esgdiversidadecorporativa.model.Department;
+import com.example.esgdiversidadecorporativa.dto.DepartmentDto;
 import com.example.esgdiversidadecorporativa.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,36 +19,56 @@ public class DepartmentController {
         this.departmentService = departmentService;
     }
 
+    // ---------------------------
+    // Listar todos os departamentos
+    // ---------------------------
     @GetMapping
-    public List<Department> getAll() {
-        return departmentService.findAll();
+    public ResponseEntity<List<DepartmentDto>> getAll() {
+        return ResponseEntity.ok(departmentService.getAllDepartments());
     }
 
+    // ---------------------------
+    // Buscar por ID
+    // ---------------------------
     @GetMapping("/{id}")
-    public ResponseEntity<Department> getById(@PathVariable Long id) {
-        return departmentService.findById(id)
+    public ResponseEntity<DepartmentDto> getById(@PathVariable String id) {
+        return departmentService.getDepartmentById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    // ---------------------------
+    // Criar novo departamento
+    // ---------------------------
     @PostMapping
-    public Department create(@RequestBody Department department) {
-        return departmentService.save(department);
+    public ResponseEntity<DepartmentDto> create(@RequestBody DepartmentDto dto) {
+        DepartmentDto created = departmentService.createDepartment(dto);
+        return ResponseEntity.ok(created);
     }
 
+    // ---------------------------
+    // Atualizar departamento
+    // ---------------------------
     @PutMapping("/{id}")
-    public ResponseEntity<Department> update(@PathVariable Long id, @RequestBody Department updated) {
-        return departmentService.findById(id)
-                .map(existing -> {
-                    updated.setDepartmentId(id);
-                    return ResponseEntity.ok(departmentService.save(updated));
-                })
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<DepartmentDto> update(@PathVariable String id, @RequestBody DepartmentDto dto) {
+        try {
+            DepartmentDto updated = departmentService.updateDepartment(id, dto);
+            return ResponseEntity.ok(updated);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
+    // ---------------------------
+    // Deletar departamento
+    // ---------------------------
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        departmentService.deleteById(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Void> delete(@PathVariable String id) {
+        try {
+            departmentService.deleteDepartment(id);
+            return ResponseEntity.noContent().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

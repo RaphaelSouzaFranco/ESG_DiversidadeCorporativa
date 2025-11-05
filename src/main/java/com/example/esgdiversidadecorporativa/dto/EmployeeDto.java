@@ -1,13 +1,15 @@
 package com.example.esgdiversidadecorporativa.dto;
-import jakarta.persistence.*;
-import lombok.*;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class EmployeeDto {
-    private Long id;
+
+    private String employeeId;
     private String name;
     private String email;
+    private String gender;
+    private String departmentId;
 }

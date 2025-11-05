@@ -18,27 +18,23 @@ import java.util.List;
 public class Department {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "department_seq")
-    @SequenceGenerator(name = "department_seq", sequenceName = "department_seq", allocationSize = 1)
-    @Column(name = "department_id")
-    private Long departmentId;
+    @Column(name = "department_id", length = 100)
+    private String departmentId;
 
     @NotBlank(message = "Nome do departamento é obrigatório")
     @Size(min = 3, max = 100, message = "Nome deve ter entre 3 e 100 caracteres")
     @Column(name = "name", nullable = false, length = 100)
     private String name;
 
-    // depart com vários funcionários
+    // Um departamento com vários funcionários
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Employee> employees = new ArrayList<>();
 
-    // auxiliar para adicionar funcionário
     public void addEmployee(Employee employee) {
         employees.add(employee);
         employee.setDepartment(this);
     }
 
-    // auxiliar para remover funcionário
     public void removeEmployee(Employee employee) {
         employees.remove(employee);
         employee.setDepartment(null);

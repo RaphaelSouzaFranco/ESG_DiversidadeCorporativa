@@ -1,12 +1,10 @@
 package com.example.esgdiversidadecorporativa.dto;
+
 import lombok.Data;
 
+@Data
 public class EmailDto {
-
-    @Data
-    public class EmailDTO {
-        private Long id;
-        private String address;
-    }
-
+    private String recipient;
+    private String subject;
+    private String body;
 }

@@ -25,7 +25,7 @@ public class EnrollmentService {
     }
 
     // Buscar por ID
-    public Optional<Enrollment> findById(Long id) {
+    public Optional<Enrollment> findById(String id) {
         return enrollmentRepository.findById(id);
     }
 
@@ -35,7 +35,7 @@ public class EnrollmentService {
     }
 
     // Deletar por ID
-    public void deleteById(Long id) {
+    public void deleteById(String id) {
         enrollmentRepository.deleteById(id);
     }
 }

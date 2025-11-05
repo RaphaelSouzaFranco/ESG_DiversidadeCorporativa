@@ -18,19 +18,63 @@ public class EmailService {
         this.emailRepository = emailRepository;
     }
 
+    // Buscar todos os emails
     public List<Email> findAll() {
         return emailRepository.findAll();
     }
 
-    public Optional<Email> findById(Long id) {
+    // Buscar por ID
+    public Optional<Email> findById(String id) {
         return emailRepository.findById(id);
     }
 
+    // Criar ou atualizar email
     public Email save(Email email) {
+
+        // Valida status permitido
+        if (email.getStatus() != null) {
+            String status = email.getStatus().toUpperCase();
+            if (!List.of("PENDING", "SENT", "FAILED").contains(status)) {
+                throw new IllegalArgumentException("Status inválido: " + email.getStatus());
+            }
+        }
+
+        // Bloqueia alteração de email já enviado
+        if (email.getId() != null) {
+            Optional<Email> existing = emailRepository.findById(email.getId());
+            if (existing.isPresent() && existing.get().isSent()) {
+                throw new IllegalStateException("Não é possível alterar um e-mail já enviado.");
+            }
+        }
+
         return emailRepository.save(email);
     }
 
-    public void deleteById(Long id) {
+    // Excluir email
+    public void deleteById(String id) {
+        Optional<Email> existing = emailRepository.findById(id);
+        if (existing.isEmpty()) {
+            throw new IllegalArgumentException("E-mail não encontrado: " + id);
+        }
+
+        if (existing.get().isSent()) {
+            throw new IllegalStateException("Não é permitido excluir um e-mail já enviado.");
+        }
+
         emailRepository.deleteById(id);
+    }
+
+    // Buscar emails pendentes
+    public List<Email> findPending() {
+        return emailRepository.findByStatus("PENDING");
+    }
+
+    // Simular envio e marcar como enviado
+    public Email markAsSent(String id) {
+        Email email = emailRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("E-mail não encontrado: " + id));
+
+        email.markAsSent();
+        return emailRepository.save(email);
     }
 }
