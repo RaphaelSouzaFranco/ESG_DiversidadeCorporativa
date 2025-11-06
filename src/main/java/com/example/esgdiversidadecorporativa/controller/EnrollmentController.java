@@ -2,6 +2,7 @@ package com.example.esgdiversidadecorporativa.controller;
 
 import com.example.esgdiversidadecorporativa.model.Enrollment;
 import com.example.esgdiversidadecorporativa.service.EnrollmentService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,19 +26,19 @@ public class EnrollmentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Enrollment> getById(@PathVariable Long id) {
+    public ResponseEntity<Enrollment> getById(@PathVariable String id) {
         return enrollmentService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Enrollment create(@RequestBody Enrollment enrollment) {
+    public Enrollment create(@Valid @RequestBody Enrollment enrollment) {
         return enrollmentService.save(enrollment);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Enrollment> update(@PathVariable Long id, @RequestBody Enrollment updated) {
+    public ResponseEntity<Enrollment> update(@PathVariable String id, @Valid @RequestBody Enrollment updated) {
         return enrollmentService.findById(id)
                 .map(existing -> {
                     updated.setEnrollmentId(id);
@@ -46,8 +47,9 @@ public class EnrollmentController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable String id) {
         enrollmentService.deleteById(id);
         return ResponseEntity.noContent().build();
     }

@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Entity
 @Table(name = "enrollment")
@@ -16,10 +17,8 @@ import java.time.LocalDate;
 public class Enrollment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "enrollment_seq")
-    @SequenceGenerator(name = "enrollment_seq", sequenceName = "enrollment_seq", allocationSize = 1)
-    @Column(name = "enrollment_id")
-    private Long enrollmentId;
+    @Column(name = "enrollment_id", length = 100)
+    private String enrollmentId;
 
     @NotNull(message = "Data de matrícula é obrigatória")
     @Column(name = "enrollment_date", nullable = false)
@@ -28,25 +27,25 @@ public class Enrollment {
     @Column(name = "last_notification_date")
     private LocalDate lastNotificationDate;
 
-    //  Muitas matrículas são de  um funcionário
+    // 🔗 Muitas matrículas pertencem a um funcionário
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_employee_id",
             foreignKey = @ForeignKey(name = "enrollment_employee_FK"))
     @NotNull(message = "Funcionário é obrigatório")
     private Employee employee;
 
-    // Muitas matrículas são de um treinamento
+    // 🔗 Muitas matrículas pertencem a um treinamento
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "training_training_id",
             foreignKey = @ForeignKey(name = "enrollment_training_FK"))
     @NotNull(message = "Treinamento é obrigatório")
     private Training training;
 
-    // uma matrícula pode ter uma conclusão (ou nenhuma)
+    // 🔗 Uma matrícula pode ter uma conclusão (ou nenhuma)
     @OneToOne(mappedBy = "enrollment", cascade = CascadeType.ALL, orphanRemoval = true)
     private Completion completion;
 
-    //  definir a conclusão
+    // 🔧 Define a conclusão e sincroniza os dois lados da relação
     public void setCompletion(Completion completion) {
         if (completion == null) {
             if (this.completion != null) {
@@ -58,12 +57,12 @@ public class Enrollment {
         this.completion = completion;
     }
 
-    //  auxiliar para verificar se está concluído
+    // 🧠 Método auxiliar: matrícula concluída?
     public boolean isCompleted() {
         return completion != null;
     }
 
-    // auxiliar para verificar se precisa de notificação
+    // 🕐 Método auxiliar: precisa de notificação?
     public boolean needsNotification() {
         if (isCompleted()) {
             return false;
@@ -71,7 +70,14 @@ public class Enrollment {
         if (lastNotificationDate == null) {
             return true;
         }
-        // Verifica se passaram 7 dias desde a última notificação
         return LocalDate.now().isAfter(lastNotificationDate.plusDays(7));
+    }
+
+    // 🆔 Gera ID automaticamente caso não exista (UUID)
+    @PrePersist
+    public void generateId() {
+        if (this.enrollmentId == null || this.enrollmentId.isBlank()) {
+            this.enrollmentId = "ENR_" + UUID.randomUUID();
+        }
     }
 }

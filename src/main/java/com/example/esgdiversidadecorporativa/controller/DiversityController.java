@@ -1,7 +1,8 @@
 package com.example.esgdiversidadecorporativa.controller;
 
-import com.example.esgdiversidadecorporativa.model.Diversity;
+import com.example.esgdiversidadecorporativa.dto.DiversityDto;
 import com.example.esgdiversidadecorporativa.service.DiversityService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,34 +21,36 @@ public class DiversityController {
     }
 
     @GetMapping
-    public List<Diversity> getAll() {
+    public List<DiversityDto> getAll() {
         return diversityService.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Diversity> getById(@PathVariable Long id) {
+    public ResponseEntity<DiversityDto> getById(@PathVariable String id) {
         return diversityService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Diversity create(@RequestBody Diversity diversity) {
-        return diversityService.save(diversity);
+    public ResponseEntity<DiversityDto> create(@RequestBody DiversityDto dto) {
+        DiversityDto saved = diversityService.save(dto);
+        return ResponseEntity.ok(saved);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Diversity> update(@PathVariable Long id, @RequestBody Diversity updated) {
+    public ResponseEntity<DiversityDto> update(@PathVariable String id, @RequestBody DiversityDto dto) {
         return diversityService.findById(id)
                 .map(existing -> {
-                    updated.setReportId(id);
-                    return ResponseEntity.ok(diversityService.save(updated));
+                    dto.setReportId(id); // garante que o ID não será alterado
+                    DiversityDto updated = diversityService.save(dto);
+                    return ResponseEntity.ok(updated);
                 })
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable String id) {
         diversityService.deleteById(id);
         return ResponseEntity.noContent().build();
     }

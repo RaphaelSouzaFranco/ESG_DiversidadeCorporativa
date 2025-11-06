@@ -25,19 +25,14 @@ public class TrainingController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Training> getById(@PathVariable Long id) {
+    public ResponseEntity<Training> getById(@PathVariable String id) {
         return trainingService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
-    public Training create(@RequestBody Training training) {
-        return trainingService.save(training);
-    }
-
     @PutMapping("/{id}")
-    public ResponseEntity<Training> update(@PathVariable Long id, @RequestBody Training updated) {
+    public ResponseEntity<Training> update(@PathVariable String id, @RequestBody Training updated) {
         return trainingService.findById(id)
                 .map(existing -> {
                     updated.setTrainingId(id);
@@ -47,8 +42,9 @@ public class TrainingController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable String id) {
         trainingService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
 }

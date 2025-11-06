@@ -7,7 +7,7 @@ public class EnrollmentDto {
 
     @Data
     public class EnrollmentDTO {
-        private Long id;
+        private String id;
         private String status;
     }
 

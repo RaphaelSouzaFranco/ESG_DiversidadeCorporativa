@@ -20,10 +20,8 @@ import java.util.List;
 public class Employee {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "employee_seq")
-    @SequenceGenerator(name = "employee_seq", sequenceName = "employee_seq", allocationSize = 1)
     @Column(name = "employee_id")
-    private Long employeeId;
+    private String employeeId;
 
     @NotBlank(message = "Nome do funcionário é obrigatório")
     @Size(min = 3, max = 100, message = "Nome deve ter entre 3 e 100 caracteres")

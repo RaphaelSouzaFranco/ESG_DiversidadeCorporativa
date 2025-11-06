@@ -20,7 +20,7 @@ public class Email {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "email_outbox_seq")
     @SequenceGenerator(name = "email_outbox_seq", sequenceName = "email_outbox_seq", allocationSize = 1)
     @Column(name = "id")
-    private Long id;
+    private String id;
 
     @NotBlank(message = "Destinatário é obrigatório")
     @jakarta.validation.constraints.Email(message = "Destinatário deve ser um email válido")
@@ -38,7 +38,7 @@ public class Email {
 
     @NotBlank(message = "Status é obrigatório")
     @Column(name = "status", nullable = false, length = 20)
-    private String status; // "PENDING", "SENT", "FAILED"
+    private String status;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -46,7 +46,6 @@ public class Email {
     @Column(name = "sent_at")
     private LocalDateTime sentAt;
 
-    //  executado antes de persistir a entidade
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
@@ -55,23 +54,19 @@ public class Email {
         }
     }
 
-    //  auxiliar para marcar como enviado
     public void markAsSent() {
         this.status = "SENT";
         this.sentAt = LocalDateTime.now();
     }
 
-    //  auxiliar para marcar como falha
     public void markAsFailed() {
         this.status = "FAILED";
     }
 
-    //  auxiliar para verificar se está pendente
     public boolean isPending() {
         return "PENDING".equalsIgnoreCase(status);
     }
 
-    //  auxiliar para verificar se foi enviado
     public boolean isSent() {
         return "SENT".equalsIgnoreCase(status);
     }

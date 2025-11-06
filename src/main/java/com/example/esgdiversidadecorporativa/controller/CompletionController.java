@@ -19,36 +19,49 @@ public class CompletionController {
         this.completionService = completionService;
     }
 
+    // 🔹 GET - Listar todas as conclusões
     @GetMapping
-    public List<Completion> getAll() {
-        return completionService.findAll();
+    public ResponseEntity<List<Completion>> getAllCompletions() {
+        List<Completion> completions = completionService.findAll();
+        return ResponseEntity.ok(completions);
     }
 
+    // 🔹 GET - Buscar por ID
     @GetMapping("/{id}")
-    public ResponseEntity<Completion> getById(@PathVariable Long id) {
+    public ResponseEntity<Completion> getCompletionById(@PathVariable String id) {
         return completionService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    // 🔹 POST - Criar nova conclusão
     @PostMapping
-    public Completion create(@RequestBody Completion completion) {
-        return completionService.save(completion);
+    public ResponseEntity<?> createCompletion(@RequestBody Completion completion) {
+        try {
+            Completion saved = completionService.createCompletion(completion);
+            return ResponseEntity.ok(saved);
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erro ao criar conclusão: " + e.getMessage());
+        }
     }
 
+    // 🔹 PUT - Atualizar conclusão existente
     @PutMapping("/{id}")
-    public ResponseEntity<Completion> update(@PathVariable Long id, @RequestBody Completion updated) {
-        return completionService.findById(id)
-                .map(existing -> {
-                    updated.setCompletionId(id);
-                    return ResponseEntity.ok(completionService.save(updated));
-                })
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<?> updateCompletion(@PathVariable String id, @RequestBody Completion updated) {
+        try {
+            Completion saved = completionService.updateCompletion(id, updated);
+            return ResponseEntity.ok(saved);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Erro ao atualizar: " + e.getMessage());
+        }
     }
 
+    // 🔹 DELETE - Deletar conclusão
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        completionService.deleteById(id);
+    public ResponseEntity<Void> deleteCompletion(@PathVariable String id) {
+        completionService.deleteCompletion(id);
         return ResponseEntity.noContent().build();
     }
 }

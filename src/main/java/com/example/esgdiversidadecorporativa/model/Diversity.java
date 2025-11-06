@@ -19,53 +19,48 @@ import java.time.LocalDateTime;
 public class Diversity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "diversity_report_seq")
-    @SequenceGenerator(name = "diversity_report_seq", sequenceName = "diversity_report_seq", allocationSize = 1)
     @Column(name = "report_id")
-    private Long reportId;
+    private String reportId;
 
-    @NotNull(message = "ID do departamento é obrigatório")
-    @Column(name = "department_id", nullable = false)
-    private Long departmentId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_department_id", foreignKey = @ForeignKey(name = "diversity_department_FK"))
+    @NotNull(message = "Departamento é obrigatório")
+    private Department department;
 
-    @NotBlank(message = "Nome do departamento é obrigatório")
-    @Size(min = 3, max = 100, message = "Nome deve ter entre 3 e 100 caracteres")
-    @Column(name = "department_name", nullable = false, length = 100)
-    private String departmentName;
 
     @Min(value = 0, message = "Total de funcionários não pode ser negativo")
     @Column(name = "total_employees", nullable = false)
-    private Integer totalEmployees;
+    private Long totalEmployees = 0L;
 
     @Min(value = 0, message = "Total de homens não pode ser negativo")
     @Column(name = "total_male", nullable = false)
-    private Integer totalMale;
+    private Long maleCount = 0L;
 
     @Min(value = 0, message = "Total de mulheres não pode ser negativo")
     @Column(name = "total_female", nullable = false)
-    private Integer totalFemale;
+    private Long femaleCount = 0L;
 
     @Min(value = 0, message = "Total de outros não pode ser negativo")
     @Column(name = "total_other", nullable = false)
-    private Integer totalOther;
+    private Long otherCount = 0L;
 
     @Min(value = 0, message = "Total não informado não pode ser negativo")
     @Column(name = "total_not_informed", nullable = false)
-    private Integer totalNotInformed;
+    private Integer totalNotInformed = 0;
 
     @Column(name = "percentage_male")
-    private Double percentageMale;
+    private Double percentageMale = 0.0;
 
     @Column(name = "percentage_female")
-    private Double percentageFemale;
+    private Double percentageFemale = 0.0;
 
     @Column(name = "percentage_other")
-    private Double percentageOther;
+    private Double percentageOther = 0.0;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    //  executado antes de persistir a entidade
+    // Calcula automaticamente os percentuais ao criar
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
@@ -75,9 +70,9 @@ public class Diversity {
     //  para calcular percentuais
     public void calculatePercentages() {
         if (totalEmployees > 0) {
-            percentageMale = (totalMale * 100.0) / totalEmployees;
-            percentageFemale = (totalFemale * 100.0) / totalEmployees;
-            percentageOther = (totalOther * 100.0) / totalEmployees;
+            percentageMale = (maleCount * 100.0) / totalEmployees;
+            percentageFemale = (femaleCount * 100.0) / totalEmployees;
+            percentageOther = (otherCount * 100.0) / totalEmployees;
         } else {
             percentageMale = 0.0;
             percentageFemale = 0.0;
