@@ -21,12 +21,12 @@ public class Department {
     @Column(name = "department_id", length = 100)
     private String departmentId;
 
-    @NotBlank(message = "Nome do departamento não obrigatório")
+    @NotBlank(message = "Nome do departamento Ã© obrigatÃ³rio")
     @Size(min = 3, max = 100, message = "Nome deve ter entre 3 e 100 caracteres")
     @Column(name = "name", nullable = false, length = 100)
     private String name;
 
-    // Um departamento com vários funcionários
+    // Um departamento com vÃ¡rios funcionÃ¡rios
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Employee> employees = new ArrayList<>();
 

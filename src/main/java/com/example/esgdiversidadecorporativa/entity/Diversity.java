@@ -24,27 +24,27 @@ public class Diversity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_department_id", foreignKey = @ForeignKey(name = "diversity_department_FK"))
-    @NotNull(message = "Departamento não obrigatório")
+    @NotNull(message = "Departamento Ã© obrigatÃ³rio")
     private Department department;
 
 
-    @Min(value = 0, message = "Total de funcionários não pode ser negativo")
+    @Min(value = 0, message = "Total de funcionÃ¡rios nÃ£o pode ser negativo")
     @Column(name = "total_employees", nullable = false)
     private Long totalEmployees = 0L;
 
-    @Min(value = 0, message = "Total de homens não pode ser negativo")
+    @Min(value = 0, message = "Total de homens nÃ£o pode ser negativo")
     @Column(name = "total_male", nullable = false)
     private Long maleCount = 0L;
 
-    @Min(value = 0, message = "Total de mulheres não pode ser negativo")
+    @Min(value = 0, message = "Total de mulheres nÃ£o pode ser negativo")
     @Column(name = "total_female", nullable = false)
     private Long femaleCount = 0L;
 
-    @Min(value = 0, message = "Total de outros não pode ser negativo")
+    @Min(value = 0, message = "Total de outros nÃ£o pode ser negativo")
     @Column(name = "total_other", nullable = false)
     private Long otherCount = 0L;
 
-    @Min(value = 0, message = "Total não informado não pode ser negativo")
+    @Min(value = 0, message = "Total nÃ£o informado nÃ£o pode ser negativo")
     @Column(name = "total_not_informed", nullable = false)
     private Integer totalNotInformed = 0;
 
@@ -80,7 +80,7 @@ public class Diversity {
         }
     }
 
-    //  auxiliar para verificar se tem boa diversidade (exemplo: 30% de cada gênero)
+    //  auxiliar para verificar se tem boa diversidade (exemplo: 30% de cada gÃªnero)
     public boolean hasGoodDiversity() {
         return percentageMale >= 30.0 &&
                 percentageFemale >= 30.0;

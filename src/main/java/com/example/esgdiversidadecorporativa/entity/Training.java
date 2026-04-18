@@ -23,23 +23,23 @@ public class Training {
     @Column(name = "training_id", length = 100)
     private String trainingId;
 
-    @NotBlank(message = "Título do treinamento não obrigatório")
-    @Size(min = 5, max = 200, message = "Título deve ter entre 5 e 200 caracteres")
+    @NotBlank(message = "TÃ­tulo do treinamento Ã© obrigatÃ³rio")
+    @Size(min = 5, max = 200, message = "TÃ­tulo deve ter entre 5 e 200 caracteres")
     @Column(name = "title", nullable = false, length = 200)
     private String title;
 
-    @Size(max = 500, message = "Descrição deve ter no máximo 500 caracteres")
+    @Size(max = 500, message = "DescriÃ§Ã£o deve ter no mÃ¡ximo 500 caracteres")
     @Column(name = "description", length = 500)
     private String description;
 
-    @NotNull(message = "Data de conclusão não obrigatória")
+    @NotNull(message = "Data de conclusÃ£o Ã© obrigatÃ³ria")
     @Column(name = "due_date", nullable = false)
     private LocalDate dueDate;
 
     @OneToMany(mappedBy = "training", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Enrollment> enrollments = new ArrayList<>();
 
-    // MÃ©todo auxiliar
+    // MÃƒÂ©todo auxiliar
     public void addEnrollment(Enrollment enrollment) {
         enrollments.add(enrollment);
         enrollment.setTraining(this);

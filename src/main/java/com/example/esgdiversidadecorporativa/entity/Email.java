@@ -22,21 +22,21 @@ public class Email {
     @Column(name = "id")
     private String id;
 
-    @NotBlank(message = "Destinatário não obrigatório")
-    @jakarta.validation.constraints.Email(message = "Destinatário deve ser um email válido")
+    @NotBlank(message = "DestinatÃ¡rio Ã© obrigatÃ³rio")
+    @jakarta.validation.constraints.Email(message = "DestinatÃ¡rio deve ser um email vÃ¡lido")
     @Column(name = "recipient", nullable = false, length = 150)
     private String recipient;
 
-    @NotBlank(message = "Assunto não obrigatório")
+    @NotBlank(message = "Assunto Ã© obrigatÃ³rio")
     @Size(min = 5, max = 200, message = "Assunto deve ter entre 5 e 200 caracteres")
     @Column(name = "subject", nullable = false, length = 200)
     private String subject;
 
-    @NotBlank(message = "Corpo da mensagem não obrigatório")
+    @NotBlank(message = "Corpo da mensagem Ã© obrigatÃ³rio")
     @Column(name = "body", nullable = false, columnDefinition = "CLOB")
     private String body;
 
-    @NotBlank(message = "Status não obrigatório")
+    @NotBlank(message = "Status Ã© obrigatÃ³rio")
     @Column(name = "status", nullable = false, length = 20)
     private String status;
 
