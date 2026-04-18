@@ -1,6 +1,6 @@
 package com.example.esgdiversidadecorporativa.controller;
 
-import com.example.esgdiversidadecorporativa.model.Completion;
+import com.example.esgdiversidadecorporativa.entity.Completion;
 import com.example.esgdiversidadecorporativa.service.CompletionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,14 +19,14 @@ public class CompletionController {
         this.completionService = completionService;
     }
 
-    // 🔹 GET - Listar todas as conclusões
+    // ðŸ”¹ GET - Listar todas as conclusÃµes
     @GetMapping
     public ResponseEntity<List<Completion>> getAllCompletions() {
         List<Completion> completions = completionService.findAll();
         return ResponseEntity.ok(completions);
     }
 
-    // 🔹 GET - Buscar por ID
+    // ðŸ”¹ GET - Buscar por ID
     @GetMapping("/{id}")
     public ResponseEntity<Completion> getCompletionById(@PathVariable String id) {
         return completionService.findById(id)
@@ -34,7 +34,7 @@ public class CompletionController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // 🔹 POST - Criar nova conclusão
+    // ðŸ”¹ POST - Criar nova conclusÃ£o
     @PostMapping
     public ResponseEntity<?> createCompletion(@RequestBody Completion completion) {
         try {
@@ -43,11 +43,11 @@ public class CompletionController {
         } catch (IllegalArgumentException | IllegalStateException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Erro ao criar conclusão: " + e.getMessage());
+            return ResponseEntity.internalServerError().body("Erro ao criar conclusÃ£o: " + e.getMessage());
         }
     }
 
-    // 🔹 PUT - Atualizar conclusão existente
+    // ðŸ”¹ PUT - Atualizar conclusÃ£o existente
     @PutMapping("/{id}")
     public ResponseEntity<?> updateCompletion(@PathVariable String id, @RequestBody Completion updated) {
         try {
@@ -58,7 +58,7 @@ public class CompletionController {
         }
     }
 
-    // 🔹 DELETE - Deletar conclusão
+    // ðŸ”¹ DELETE - Deletar conclusÃ£o
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCompletion(@PathVariable String id) {
         completionService.deleteCompletion(id);

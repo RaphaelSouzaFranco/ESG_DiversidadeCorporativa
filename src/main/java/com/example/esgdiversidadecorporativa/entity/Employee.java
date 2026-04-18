@@ -1,4 +1,4 @@
-package com.example.esgdiversidadecorporativa.model;
+package com.example.esgdiversidadecorporativa.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -23,12 +23,12 @@ public class Employee {
     @Column(name = "employee_id")
     private String employeeId;
 
-    @NotBlank(message = "Nome do funcionário é obrigatório")
+    @NotBlank(message = "Nome do funcionário não obrigatório")
     @Size(min = 3, max = 100, message = "Nome deve ter entre 3 e 100 caracteres")
     @Column(name = "name", nullable = false, length = 100)
     private String name;
 
-    @NotBlank(message = "Email é obrigatório")
+    @NotBlank(message = "Email não obrigatório")
     @Email(message = "Email deve ser válido")
     @Column(name = "email", nullable = false, unique = true, length = 150)
     private String email;
@@ -41,7 +41,7 @@ public class Employee {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_department_id",
             foreignKey = @ForeignKey(name = "employee_department_FK"))
-    @NotNull(message = "Departamento é obrigatório")
+    @NotNull(message = "Departamento não obrigatório")
     private Department department;
 
     // Relacionamento: Um funcionário tem muitas matrículas

@@ -1,7 +1,7 @@
 package com.example.esgdiversidadecorporativa.controller;
 
 import com.example.esgdiversidadecorporativa.dto.EmployeeDto;
-import com.example.esgdiversidadecorporativa.model.Employee;
+import com.example.esgdiversidadecorporativa.entity.Employee;
 import com.example.esgdiversidadecorporativa.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +35,7 @@ public class EmployeeController {
     }
 
     // ---------------------------
-    // Criar funcionário
+    // Criar funcionÃ¡rio
     // ---------------------------
     @PostMapping
     public ResponseEntity<EmployeeDto> create(@RequestBody EmployeeDto dto) {
@@ -43,7 +43,7 @@ public class EmployeeController {
     }
 
     // ---------------------------
-    // Atualizar funcionário
+    // Atualizar funcionÃ¡rio
     // ---------------------------
     @PutMapping("/{id}")
     public ResponseEntity<Employee> update(@PathVariable String id, @RequestBody EmployeeDto dto) {
@@ -55,7 +55,7 @@ public class EmployeeController {
     }
 
     // ---------------------------
-    // Deletar funcionário
+    // Deletar funcionÃ¡rio
     // ---------------------------
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable String id) {

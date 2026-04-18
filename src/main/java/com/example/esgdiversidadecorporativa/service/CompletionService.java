@@ -1,7 +1,7 @@
 package com.example.esgdiversidadecorporativa.service;
 
-import com.example.esgdiversidadecorporativa.model.Completion;
-import com.example.esgdiversidadecorporativa.model.Enrollment;
+import com.example.esgdiversidadecorporativa.entity.Completion;
+import com.example.esgdiversidadecorporativa.entity.Enrollment;
 import com.example.esgdiversidadecorporativa.repository.CompletionRepository;
 import com.example.esgdiversidadecorporativa.repository.EnrollmentRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -25,17 +25,17 @@ public class CompletionService {
         this.enrollmentRepository = enrollmentRepository;
     }
 
-    // 🔍 Buscar todas as conclusões
+    // Buscar todas as conclusões
     public List<Completion> findAll() {
         return completionRepository.findAll();
     }
 
-    // 🔍 Buscar por ID
+    // Buscar por ID
     public Optional<Completion> findById(String id) {
         return completionRepository.findById(id);
     }
 
-    // 💾 Criar uma nova conclusão
+    //Criar uma nova conclusão
     public Completion createCompletion(Completion completion) {
 
         if (completion.getEnrollment() == null || completion.getEnrollment().getEnrollmentId() == null) {
@@ -58,7 +58,7 @@ public class CompletionService {
             completion.setCompletionDate(LocalDate.now());
         }
 
-        // 🧠 Regra 4: resultado deve ser válido
+        // Regra 4: resultado deve ser válido
         if (completion.getResult() == null || completion.getResult().isBlank()) {
             throw new IllegalArgumentException("O resultado da conclusão é obrigatório (ex: Aprovado, Reprovado).");
         }
@@ -70,7 +70,7 @@ public class CompletionService {
         return completionRepository.save(completion);
     }
 
-    // ✏️ Atualizar conclusão existente
+    // Atualizar conclusão existente
     public Completion updateCompletion(String id, Completion updatedCompletion) {
         Completion existing = completionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Conclusão não encontrada."));
@@ -87,7 +87,7 @@ public class CompletionService {
         return completionRepository.save(existing);
     }
 
-    // ❌ Deletar conclusão
+    // Deletar conclusão
     public void deleteCompletion(String id) {
         Completion completion = completionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Conclusão não encontrada."));

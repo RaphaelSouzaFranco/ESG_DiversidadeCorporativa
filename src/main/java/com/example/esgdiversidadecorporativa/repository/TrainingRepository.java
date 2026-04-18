@@ -1,6 +1,6 @@
 package com.example.esgdiversidadecorporativa.repository;
 
-import com.example.esgdiversidadecorporativa.model.Training;
+import com.example.esgdiversidadecorporativa.entity.Training;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

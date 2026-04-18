@@ -1,4 +1,4 @@
-package com.example.esgdiversidadecorporativa.model;
+package com.example.esgdiversidadecorporativa.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -21,7 +21,7 @@ public class Department {
     @Column(name = "department_id", length = 100)
     private String departmentId;
 
-    @NotBlank(message = "Nome do departamento é obrigatório")
+    @NotBlank(message = "Nome do departamento não obrigatório")
     @Size(min = 3, max = 100, message = "Nome deve ter entre 3 e 100 caracteres")
     @Column(name = "name", nullable = false, length = 100)
     private String name;

@@ -1,8 +1,8 @@
 package com.example.esgdiversidadecorporativa.repository;
 
-import com.example.esgdiversidadecorporativa.model.Enrollment;
-import com.example.esgdiversidadecorporativa.model.Employee;
-import com.example.esgdiversidadecorporativa.model.Training;
+import com.example.esgdiversidadecorporativa.entity.Enrollment;
+import com.example.esgdiversidadecorporativa.entity.Employee;
+import com.example.esgdiversidadecorporativa.entity.Training;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.List;

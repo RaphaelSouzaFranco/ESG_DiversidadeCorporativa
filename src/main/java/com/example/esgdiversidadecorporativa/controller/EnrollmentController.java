@@ -1,6 +1,6 @@
 package com.example.esgdiversidadecorporativa.controller;
 
-import com.example.esgdiversidadecorporativa.model.Enrollment;
+import com.example.esgdiversidadecorporativa.entity.Enrollment;
 import com.example.esgdiversidadecorporativa.service.EnrollmentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

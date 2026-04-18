@@ -1,8 +1,8 @@
 package com.example.esgdiversidadecorporativa.service;
 
 import com.example.esgdiversidadecorporativa.dto.DiversityDto;
-import com.example.esgdiversidadecorporativa.model.Department;
-import com.example.esgdiversidadecorporativa.model.Diversity;
+import com.example.esgdiversidadecorporativa.entity.Department;
+import com.example.esgdiversidadecorporativa.entity.Diversity;
 import com.example.esgdiversidadecorporativa.repository.DiversityRepository;
 import com.example.esgdiversidadecorporativa.repository.DepartmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;

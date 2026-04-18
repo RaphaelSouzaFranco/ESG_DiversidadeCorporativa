@@ -1,4 +1,4 @@
-package com.example.esgdiversidadecorporativa.model;
+package com.example.esgdiversidadecorporativa.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
@@ -24,7 +24,7 @@ public class Diversity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_department_id", foreignKey = @ForeignKey(name = "diversity_department_FK"))
-    @NotNull(message = "Departamento é obrigatório")
+    @NotNull(message = "Departamento não obrigatório")
     private Department department;
 
 

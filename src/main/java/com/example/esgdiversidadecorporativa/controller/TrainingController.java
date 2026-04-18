@@ -1,6 +1,6 @@
 package com.example.esgdiversidadecorporativa.controller;
 
-import com.example.esgdiversidadecorporativa.model.Training;
+import com.example.esgdiversidadecorporativa.entity.Training;
 import com.example.esgdiversidadecorporativa.service.TrainingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

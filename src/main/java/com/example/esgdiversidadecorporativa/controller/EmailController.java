@@ -1,7 +1,7 @@
 package com.example.esgdiversidadecorporativa.controller;
 
 import com.example.esgdiversidadecorporativa.dto.EmailDto;
-import com.example.esgdiversidadecorporativa.model.Email;
+import com.example.esgdiversidadecorporativa.entity.Email;
 import com.example.esgdiversidadecorporativa.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.example.esgdiversidadecorporativa.model;
+package com.example.esgdiversidadecorporativa.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -23,7 +23,7 @@ public class Training {
     @Column(name = "training_id", length = 100)
     private String trainingId;
 
-    @NotBlank(message = "Título do treinamento é obrigatório")
+    @NotBlank(message = "Título do treinamento não obrigatório")
     @Size(min = 5, max = 200, message = "Título deve ter entre 5 e 200 caracteres")
     @Column(name = "title", nullable = false, length = 200)
     private String title;
@@ -32,14 +32,14 @@ public class Training {
     @Column(name = "description", length = 500)
     private String description;
 
-    @NotNull(message = "Data de conclusão é obrigatória")
+    @NotNull(message = "Data de conclusão não obrigatória")
     @Column(name = "due_date", nullable = false)
     private LocalDate dueDate;
 
     @OneToMany(mappedBy = "training", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Enrollment> enrollments = new ArrayList<>();
 
-    // Método auxiliar
+    // MÃ©todo auxiliar
     public void addEnrollment(Enrollment enrollment) {
         enrollments.add(enrollment);
         enrollment.setTraining(this);

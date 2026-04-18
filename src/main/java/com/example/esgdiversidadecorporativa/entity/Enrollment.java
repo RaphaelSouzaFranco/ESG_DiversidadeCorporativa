@@ -1,4 +1,4 @@
-package com.example.esgdiversidadecorporativa.model;
+package com.example.esgdiversidadecorporativa.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -20,32 +20,32 @@ public class Enrollment {
     @Column(name = "enrollment_id", length = 100)
     private String enrollmentId;
 
-    @NotNull(message = "Data de matrícula é obrigatória")
+    @NotNull(message = "Data de matrícula não obrigatória")
     @Column(name = "enrollment_date", nullable = false)
     private LocalDate enrollmentDate;
 
     @Column(name = "last_notification_date")
     private LocalDate lastNotificationDate;
 
-    // 🔗 Muitas matrículas pertencem a um funcionário
+    // Muitas matrÃ­culas pertencem a um funcionÃ¡rio
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_employee_id",
             foreignKey = @ForeignKey(name = "enrollment_employee_FK"))
-    @NotNull(message = "Funcionário é obrigatório")
+    @NotNull(message = "Funcionário não obrigatório")
     private Employee employee;
 
-    // 🔗 Muitas matrículas pertencem a um treinamento
+    // Muitas matrÃ­culas pertencem a um treinamento
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "training_training_id",
             foreignKey = @ForeignKey(name = "enrollment_training_FK"))
-    @NotNull(message = "Treinamento é obrigatório")
+    @NotNull(message = "Treinamento não obrigatório")
     private Training training;
 
-    // 🔗 Uma matrícula pode ter uma conclusão (ou nenhuma)
+    // Uma matrícula pode ter uma conclusão (ou nenhuma)
     @OneToOne(mappedBy = "enrollment", cascade = CascadeType.ALL, orphanRemoval = true)
     private Completion completion;
 
-    // 🔧 Define a conclusão e sincroniza os dois lados da relação
+    //Define a conclusão e sincroniza os dois lados da relação
     public void setCompletion(Completion completion) {
         if (completion == null) {
             if (this.completion != null) {
@@ -57,12 +57,12 @@ public class Enrollment {
         this.completion = completion;
     }
 
-    // 🧠 Método auxiliar: matrícula concluída?
+    // Método auxiliar: matrícula concluÃ­da?
     public boolean isCompleted() {
         return completion != null;
     }
 
-    // 🕐 Método auxiliar: precisa de notificação?
+    // Método auxiliar: precisa de notificaÃ§Ã£o?
     public boolean needsNotification() {
         if (isCompleted()) {
             return false;
@@ -73,7 +73,7 @@ public class Enrollment {
         return LocalDate.now().isAfter(lastNotificationDate.plusDays(7));
     }
 
-    // 🆔 Gera ID automaticamente caso não exista (UUID)
+    //  Gera ID automaticamente caso nÃ£o exista (UUID)
     @PrePersist
     public void generateId() {
         if (this.enrollmentId == null || this.enrollmentId.isBlank()) {

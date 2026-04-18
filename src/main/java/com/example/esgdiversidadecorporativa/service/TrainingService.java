@@ -1,6 +1,6 @@
 package com.example.esgdiversidadecorporativa.service;
 
-import com.example.esgdiversidadecorporativa.model.Training;
+import com.example.esgdiversidadecorporativa.entity.Training;
 import com.example.esgdiversidadecorporativa.repository.TrainingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

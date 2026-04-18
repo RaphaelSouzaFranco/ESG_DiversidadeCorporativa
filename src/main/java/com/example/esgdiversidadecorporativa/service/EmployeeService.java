@@ -1,9 +1,9 @@
 package com.example.esgdiversidadecorporativa.service;
 
 import com.example.esgdiversidadecorporativa.dto.EmployeeDto;
-import com.example.esgdiversidadecorporativa.model.Department;
-import com.example.esgdiversidadecorporativa.model.Diversity;
-import com.example.esgdiversidadecorporativa.model.Employee;
+import com.example.esgdiversidadecorporativa.entity.Department;
+import com.example.esgdiversidadecorporativa.entity.Diversity;
+import com.example.esgdiversidadecorporativa.entity.Employee;
 import com.example.esgdiversidadecorporativa.repository.DepartmentRepository;
 import com.example.esgdiversidadecorporativa.repository.DiversityRepository;
 import com.example.esgdiversidadecorporativa.repository.EmployeeRepository;
@@ -28,12 +28,12 @@ public class EmployeeService {
     private DiversityRepository diversityReportRepository;
 
     // ---------------------------
-    // Cadastrar novo funcionário
+    // Cadastrar novo funcionario  
     // ---------------------------
     public EmployeeDto createEmployee(EmployeeDto dto) {
 
         if (employeeRepository.existsByEmail(dto.getEmail())) {
-            throw new IllegalArgumentException("Já existe um funcionário com este e-mail.");
+            throw new IllegalArgumentException("Já existe um funcionario com este e-mail.");
         }
 
         if (!isValidGender(dto.getGender())) {
@@ -59,7 +59,7 @@ public class EmployeeService {
     }
 
     // ---------------------------
-    // Listar todos os funcionários
+    // Listar todos os funcionarios
     // ---------------------------
     public List<Employee> getAllEmployees() {
         return employeeRepository.findAll();
@@ -73,15 +73,15 @@ public class EmployeeService {
     }
 
     // ---------------------------
-    // Atualizar funcionário
+    // Atualizar funcionario
     // ---------------------------
     public Employee updateEmployee(String id, EmployeeDto dto) {
         Employee existing = employeeRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Funcionário não encontrado."));
+                .orElseThrow(() -> new IllegalArgumentException("Funcionario não encontrado."));
 
         if (dto.getEmail() != null && !dto.getEmail().equals(existing.getEmail())) {
             if (employeeRepository.existsByEmail(dto.getEmail())) {
-                throw new IllegalArgumentException("E-mail já em uso por outro funcionário.");
+                throw new IllegalArgumentException("E-mail já em uso por outro funcionario.");
             }
             existing.setEmail(dto.getEmail());
         }
@@ -102,11 +102,11 @@ public class EmployeeService {
     }
 
     // ---------------------------
-    // Deletar funcionário
+    // Deletar funcionario
     // ---------------------------
     public void deleteEmployee(String id) {
         Employee employee = employeeRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Funcionário não encontrado."));
+                .orElseThrow(() -> new IllegalArgumentException("Funcionario não encontrado."));
 
         Department dept = employee.getDepartment();
         employeeRepository.delete(employee);
@@ -114,7 +114,7 @@ public class EmployeeService {
     }
 
     // ---------------------------
-    // Função auxiliar: validar gênero
+    // Funcao auxiliar: validar genero
     // ---------------------------
     private boolean isValidGender(String gender) {
         return gender != null && (gender.equalsIgnoreCase("M")
@@ -123,7 +123,7 @@ public class EmployeeService {
     }
 
     // ---------------------------
-    // Função auxiliar: atualizar relatório de diversidade
+    // Funcao auxiliar: atualizar relatorio de diversidade
     // ---------------------------
     private void updateDiversity(Department department) {
         List<Employee> employees = employeeRepository.findByDepartment(department);
