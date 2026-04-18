@@ -22,12 +22,12 @@ public class Completion {
     @Column(name = "completion_id", nullable = false, length = 100)
     private String completionId = UUID.randomUUID().toString(); // Gera ID automaticamente
 
-    @NotNull(message = "Data de conclusÃƒÂ£o Ã© obrigatÃ³ria")
+    @NotNull(message = "Data de conclusão não obrigatória")
     @Column(name = "completion_date", nullable = false)
     private LocalDate completionDate;
 
-    @NotBlank(message = "Resultado Ã© obrigatÃ³rio")
-    @Size(max = 50, message = "Resultado deve ter no mÃ¡ximo 50 caracteres")
+    @NotBlank(message = "Resultado não obrigatório")
+    @Size(max = 50, message = "Resultado deve ter no máximo 50 caracteres")
     @Column(name = "result", nullable = false, length = 50)
     private String result; // "completo", "incompleto", "aprovado", "reprovado"
 
@@ -35,7 +35,7 @@ public class Completion {
     @JoinColumn(name = "enrollment_enrollment_id",
             foreignKey = @ForeignKey(name = "completion_enrollment_FK"),
             unique = true)
-    @NotNull(message = "MatrÃ­cula Ã© obrigatÃ³ria")
+    @NotNull(message = "Matrícula não obrigatória")
     private Enrollment enrollment;
 
     public boolean isApproved() {
