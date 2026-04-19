@@ -11,9 +11,13 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class CompletionService {
+
+    private static final Set<String> VALID_RESULTS =
+            Set.of("COMPLETO", "INCOMPLETO", "APROVADO", "REPROVADO");
 
     private final CompletionRepository completionRepository;
     private final EnrollmentRepository enrollmentRepository;
@@ -25,17 +29,14 @@ public class CompletionService {
         this.enrollmentRepository = enrollmentRepository;
     }
 
-    // Buscar todas as conclusões
     public List<Completion> findAll() {
         return completionRepository.findAll();
     }
 
-    // Buscar por ID
     public Optional<Completion> findById(String id) {
         return completionRepository.findById(id);
     }
 
-    //Criar uma nova conclusão
     public Completion createCompletion(Completion completion) {
 
         if (completion.getEnrollment() == null || completion.getEnrollment().getEnrollmentId() == null) {
@@ -43,54 +44,64 @@ public class CompletionService {
         }
 
         Enrollment enrollment = enrollmentRepository.findById(
-                completion.getEnrollment().getEnrollmentId().toString()
+                completion.getEnrollment().getEnrollmentId()
         ).orElseThrow(() ->
                 new EntityNotFoundException("Matrícula não encontrada para conclusão.")
         );
-
 
         if (enrollment.getCompletion() != null) {
             throw new IllegalStateException("Esta matrícula já possui uma conclusão registrada.");
         }
 
-
         if (completion.getCompletionDate() == null) {
             completion.setCompletionDate(LocalDate.now());
         }
 
-        // Regra 4: resultado deve ser válido
-        if (completion.getResult() == null || completion.getResult().isBlank()) {
-            throw new IllegalArgumentException("O resultado da conclusão é obrigatório (ex: Aprovado, Reprovado).");
-        }
+        validateResult(completion.getResult());
 
-        // associa bidirecionalmente
+        completion.setResult(completion.getResult().toUpperCase());
+
         completion.setEnrollment(enrollment);
         enrollment.setCompletion(completion);
 
         return completionRepository.save(completion);
     }
 
-    // Atualizar conclusão existente
     public Completion updateCompletion(String id, Completion updatedCompletion) {
         Completion existing = completionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Conclusão não encontrada."));
 
-        // só atualiza campos relevantes
-        existing.setCompletionDate(updatedCompletion.getCompletionDate() != null
-                ? updatedCompletion.getCompletionDate()
-                : existing.getCompletionDate());
+        if (updatedCompletion.getCompletionDate() != null) {
+            existing.setCompletionDate(updatedCompletion.getCompletionDate());
+        }
 
-        existing.setResult(updatedCompletion.getResult() != null
-                ? updatedCompletion.getResult()
-                : existing.getResult());
+        if (updatedCompletion.getResult() != null && !updatedCompletion.getResult().isBlank()) {
+            validateResult(updatedCompletion.getResult());
+            existing.setResult(updatedCompletion.getResult().toUpperCase());
+        }
 
         return completionRepository.save(existing);
     }
 
-    // Deletar conclusão
     public void deleteCompletion(String id) {
         Completion completion = completionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Conclusão não encontrada."));
+
+        Enrollment enrollment = completion.getEnrollment();
+        if (enrollment != null) {
+            enrollment.setCompletion(null);
+        }
+
         completionRepository.delete(completion);
+    }
+
+    private void validateResult(String result) {
+        if (result == null || result.isBlank()) {
+            throw new IllegalArgumentException("O resultado da conclusão é obrigatório.");
+        }
+
+        if (!VALID_RESULTS.contains(result.toUpperCase())) {
+            throw new IllegalArgumentException("Resultado inválido. Use: COMPLETO, INCOMPLETO, APROVADO ou REPROVADO.");
+        }
     }
 }

@@ -1,12 +1,9 @@
 package com.example.esgdiversidadecorporativa.dto;
+
 import lombok.Data;
+
+@Data
 public class CompletionDto {
-
-
-    @Data
-    public class CompletionDTO {
-        private String id;
-        private String result;
-    }
-
+    private String id;
+    private String result;
 }
