@@ -1,5 +1,7 @@
 package com.example.esgdiversidadecorporativa.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -22,11 +24,11 @@ public class Completion {
     @Column(name = "completion_id", nullable = false, length = 100)
     private String completionId = UUID.randomUUID().toString(); // Gera ID automaticamente
 
-    @NotNull(message = "Data de conclusão não obrigatória")
+    @NotNull(message = "Data de conclusão é obrigatória")
     @Column(name = "completion_date", nullable = false)
     private LocalDate completionDate;
 
-    @NotBlank(message = "Resultado não obrigatório")
+    @NotBlank(message = "Resultado é obrigatório")
     @Size(max = 50, message = "Resultado deve ter no máximo 50 caracteres")
     @Column(name = "result", nullable = false, length = 50)
     private String result; // "completo", "incompleto", "aprovado", "reprovado"
@@ -35,7 +37,8 @@ public class Completion {
     @JoinColumn(name = "enrollment_enrollment_id",
             foreignKey = @ForeignKey(name = "completion_enrollment_FK"),
             unique = true)
-    @NotNull(message = "Matrícula não obrigatória")
+
+    @JsonIgnore
     private Enrollment enrollment;
 
     public boolean isApproved() {

@@ -15,8 +15,6 @@ public interface CompletionRepository extends JpaRepository<Completion, String> 
     // Busca uma conclusão específica pela matrícula
     Optional<Completion> findByEnrollment(Enrollment enrollment);
 
-    // Lista todas as conclusões de uma matrícula
-    List<Completion> findAllByEnrollment(Enrollment enrollment);
 
     // Busca todas as conclusões com resultado "Aprovado" ou "Completo"
     @Query("SELECT c FROM Completion c WHERE UPPER(c.result) IN ('APROVADO', 'COMPLETO')")
