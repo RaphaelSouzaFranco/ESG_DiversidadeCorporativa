@@ -1,0 +1,29 @@
+services:
+  db:
+    image: gvenzl/oracle-free:latest
+    container_name: oracle_db
+    ports:
+      - "1521:1521"
+    environment:
+      - ORACLE_PASSWORD=${DB_ROOT_PASSWORD}
+      - APP_USER=${DB_APPLICATION_USER}
+      - APP_USER_PASSWORD=${DB_APPLICATION_PASSWORD}
+    healthcheck:
+      test: ["CMD", "healthcheck.sh"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  app:
+    build: .
+    container_name: esg_app
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:oracle:thin:@db:1521/FREEPDB1
+      - SPRING_DATASOURCE_USERNAME=${DB_APPLICATION_USER}
+      - SPRING_DATASOURCE_PASSWORD=${DB_APPLICATION_PASSWORD}
+      - SPRING_FLYWAY_ENABLED=true
