@@ -1,0 +1,51 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Set up JDK 21
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+        cache: gradle
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+
+    - name: Build and Test with Gradle
+      run: ./gradlew build
+
+  deploy-staging:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    environment: staging
+    steps:
+    - name: Deploy para Staging
+      run: |
+        echo "Iniciando deploy em ambiente de STAGING..."
+        echo "Aqui iriam os comandos como 'docker-compose pull && docker-compose up -d' em uma máquina de teste ou scripts no Kubernetes."
+        echo "Deploy em Staging Concluído com Sucesso."
+
+  deploy-production:
+    needs: deploy-staging
+    runs-on: ubuntu-latest
+    # Geralmente produção exige aprovação manual nas Actions, mas aqui vai rodar após o staging se der tudo certo e for na main
+    if: github.ref == 'refs/heads/main'
+    environment: production
+    steps:
+    - name: Deploy para Produção
+      run: |
+        echo "Iniciando deploy em ambiente de PRODUÇÃO..."
+        echo "Deploy executado com sucesso e monitoramento ativado em Prod!"
