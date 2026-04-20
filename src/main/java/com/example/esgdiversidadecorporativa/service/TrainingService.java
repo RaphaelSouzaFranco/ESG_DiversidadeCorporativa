@@ -12,6 +12,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@SuppressWarnings("null")
 public class TrainingService {
 
     private final TrainingRepository trainingRepository;

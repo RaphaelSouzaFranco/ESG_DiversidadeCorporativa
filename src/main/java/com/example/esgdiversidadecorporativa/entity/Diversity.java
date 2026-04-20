@@ -2,9 +2,9 @@ package com.example.esgdiversidadecorporativa.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
+
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,27 +24,26 @@ public class Diversity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_department_id", foreignKey = @ForeignKey(name = "diversity_department_FK"))
-    @NotNull(message = "Departamento Ã© obrigatÃ³rio")
+    @NotNull(message = "Departamento é obrigatório")
     private Department department;
 
-
-    @Min(value = 0, message = "Total de funcionÃ¡rios nÃ£o pode ser negativo")
+    @Min(value = 0, message = "Total de funcionários não pode ser negativo")
     @Column(name = "total_employees", nullable = false)
     private Long totalEmployees = 0L;
 
-    @Min(value = 0, message = "Total de homens nÃ£o pode ser negativo")
+    @Min(value = 0, message = "Total de homens não pode ser negativo")
     @Column(name = "total_male", nullable = false)
     private Long maleCount = 0L;
 
-    @Min(value = 0, message = "Total de mulheres nÃ£o pode ser negativo")
+    @Min(value = 0, message = "Total de mulheres não pode ser negativo")
     @Column(name = "total_female", nullable = false)
     private Long femaleCount = 0L;
 
-    @Min(value = 0, message = "Total de outros nÃ£o pode ser negativo")
+    @Min(value = 0, message = "Total de outros não pode ser negativo")
     @Column(name = "total_other", nullable = false)
     private Long otherCount = 0L;
 
-    @Min(value = 0, message = "Total nÃ£o informado nÃ£o pode ser negativo")
+    @Min(value = 0, message = "Total não informado não pode ser negativo")
     @Column(name = "total_not_informed", nullable = false)
     private Integer totalNotInformed = 0;
 
@@ -67,7 +66,7 @@ public class Diversity {
         calculatePercentages();
     }
 
-    //  para calcular percentuais
+    // para calcular percentuais
     public void calculatePercentages() {
         if (totalEmployees > 0) {
             percentageMale = (maleCount * 100.0) / totalEmployees;
@@ -80,7 +79,7 @@ public class Diversity {
         }
     }
 
-    //  auxiliar para verificar se tem boa diversidade (exemplo: 30% de cada gÃªnero)
+    // auxiliar para verificar se tem boa diversidade (exemplo: 30% de cada gênero)
     public boolean hasGoodDiversity() {
         return percentageMale >= 30.0 &&
                 percentageFemale >= 30.0;

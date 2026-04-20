@@ -1,0 +1,15 @@
+# Dependências do Projeto (Spring Boot + Gradle)
+# Obs: Num ecossistema Python usa-se este 'requirements.txt'. 
+# No Java (como neste projeto), o seu verdadeiro gerenciador é o arquivo "build.gradle".
+# Segue abaixo a lista das tecnologias em uso mapeadas do seu projeto:
+
+org.springframework.boot:spring-boot-starter-data-jpa
+org.springframework.boot:spring-boot-starter-validation
+org.springframework.boot:spring-boot-starter-web
+org.springframework.boot:spring-boot-starter-actuator
+org.flywaydb:flyway-core
+org.flywaydb:flyway-database-oracle
+org.projectlombok:lombok (Apenas compilação)
+org.springframework.boot:spring-boot-devtools (Apenas desenvolvimento)
+com.oracle.database.jdbc:ojdbc11 (Apenas runtime)
+org.springframework.boot:spring-boot-starter-test (Testes)

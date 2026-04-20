@@ -3,7 +3,7 @@ package com.example.esgdiversidadecorporativa.controller;
 import com.example.esgdiversidadecorporativa.entity.Completion;
 import com.example.esgdiversidadecorporativa.service.CompletionService;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

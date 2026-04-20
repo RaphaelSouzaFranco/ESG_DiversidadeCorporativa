@@ -16,6 +16,7 @@ import java.util.Optional;
 
 
 @Service
+@SuppressWarnings("null")
 public class EmployeeService {
 
     @Autowired

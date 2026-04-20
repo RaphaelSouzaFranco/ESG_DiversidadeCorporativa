@@ -14,6 +14,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
+@SuppressWarnings("null")
 public class CompletionService {
 
     private static final Set<String> VALID_RESULTS =
