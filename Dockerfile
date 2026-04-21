@@ -2,22 +2,36 @@
 FROM gradle:8-jdk21 AS build
 WORKDIR /app
 
-# Copia os arquivos de configuração do Gradle primeiro para aproveitar o cache de camadas
+# Copia o wrapper primeiro (melhora cache)
+COPY gradlew ./
+COPY gradle ./gradle
+
+# Dá permissão antes de usar
+RUN chmod +x gradlew
+
+# Copia arquivos de build
 COPY build.gradle settings.gradle ./
+
+# Baixa dependências (cache eficiente)
+RUN ./gradlew dependencies --no-daemon
+
+# Copia o código fonte
 COPY src ./src
 
-# Gera o JAR da aplicação (ignora testes para acelerar o build se desejar)
+# Gera o JAR
 RUN ./gradlew bootJar --no-daemon
+
+# -----------------------------
 
 # Estágio 2: Runtime leve
 FROM eclipse-temurin:21-jre-jammy
 WORKDIR /app
 
-# Copia apenas o artefato gerado no estágio anterior
+# Copia o JAR gerado
 COPY --from=build /app/build/libs/*.jar app.jar
 
 # Porta padrão do Spring Boot
 EXPOSE 8080
 
-# Comando para iniciar a aplicação
+# Start da aplicação
 ENTRYPOINT ["java", "-jar", "app.jar"]

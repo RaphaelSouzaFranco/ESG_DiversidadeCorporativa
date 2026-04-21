@@ -1,3 +1,5 @@
+version: "3.9"
+
 services:
   db:
     image: gvenzl/oracle-free:latest
@@ -5,9 +7,9 @@ services:
     ports:
       - "1521:1521"
     environment:
-      - ORACLE_PASSWORD=${DB_ROOT_PASSWORD}
-      - APP_USER=${DB_APPLICATION_USER}
-      - APP_USER_PASSWORD=${DB_APPLICATION_PASSWORD}
+      ORACLE_PASSWORD: ${ORACLE_PASSWORD}
+      APP_USER: ${APP_USER}
+      APP_USER_PASSWORD: ${APP_USER_PASSWORD}
     healthcheck:
       test: ["CMD", "healthcheck.sh"]
       interval: 30s
@@ -23,7 +25,7 @@ services:
       db:
         condition: service_healthy
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:oracle:thin:@db:1521/FREEPDB1
-      - SPRING_DATASOURCE_USERNAME=${DB_APPLICATION_USER}
-      - SPRING_DATASOURCE_PASSWORD=${DB_APPLICATION_PASSWORD}
-      - SPRING_FLYWAY_ENABLED=true
+      SPRING_DATASOURCE_URL: jdbc:oracle:thin:@db:1521/FREEPDB1
+      SPRING_DATASOURCE_USERNAME: ${APP_USER}
+      SPRING_DATASOURCE_PASSWORD: ${APP_USER_PASSWORD}
+      SPRING_FLYWAY_ENABLED: "true"

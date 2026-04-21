@@ -1,27 +1,31 @@
 -- Script de inicialização V1 para Oracle (Flyway)
--- Criação da sequência para Email_Outbox
+
+-- 0. Sequence
 CREATE SEQUENCE email_outbox_seq START WITH 1 INCREMENT BY 1;
 
--- 1. Criação da tabela Department
+-- 1. Tabela Department
 CREATE TABLE department (
-    department_id VARCHAR2(100) NOT NULL PRIMARY KEY,
-    name VARCHAR2(100) NOT NULL
+    department_id VARCHAR2(100) NOT NULL,
+    name VARCHAR2(100) NOT NULL,
+    CONSTRAINT department_pk PRIMARY KEY (department_id)
 );
 
--- 2. Criação da tabela Employee
+-- 2. Tabela Employee
 CREATE TABLE employee (
-    employee_id VARCHAR2(255) NOT NULL PRIMARY KEY,
+    employee_id VARCHAR2(255) NOT NULL,
     name VARCHAR2(100) NOT NULL,
-    email VARCHAR2(150) NOT NULL UNIQUE,
+    email VARCHAR2(150) NOT NULL,
     gender VARCHAR2(20),
     department_department_id VARCHAR2(100) NOT NULL,
-    CONSTRAINT employee_department_FK FOREIGN KEY (department_department_id) 
+    CONSTRAINT employee_pk PRIMARY KEY (employee_id),
+    CONSTRAINT employee_email_uk UNIQUE (email),
+    CONSTRAINT employee_department_fk FOREIGN KEY (department_department_id) 
         REFERENCES department (department_id)
 );
 
--- 3. Criação da tabela Diversity (diversity_report)
+-- 3. Tabela Diversity Report
 CREATE TABLE diversity_report (
-    report_id VARCHAR2(255) NOT NULL PRIMARY KEY,
+    report_id VARCHAR2(255) NOT NULL,
     total_employees NUMBER(19, 0) DEFAULT 0 NOT NULL,
     total_male NUMBER(19, 0) DEFAULT 0 NOT NULL,
     total_female NUMBER(19, 0) DEFAULT 0 NOT NULL,
@@ -32,52 +36,56 @@ CREATE TABLE diversity_report (
     percentage_other NUMBER,
     created_at TIMESTAMP NOT NULL,
     department_department_id VARCHAR2(100) NOT NULL,
-    CONSTRAINT diversity_department_FK FOREIGN KEY (department_department_id) 
+    CONSTRAINT diversity_pk PRIMARY KEY (report_id),
+    CONSTRAINT diversity_department_fk FOREIGN KEY (department_department_id) 
         REFERENCES department (department_id)
 );
 
--- 4. Criação da tabela Training
+-- 4. Tabela Training
 CREATE TABLE training (
-    training_id VARCHAR2(100) NOT NULL PRIMARY KEY,
+    training_id VARCHAR2(100) NOT NULL,
     title VARCHAR2(200) NOT NULL,
     description VARCHAR2(500),
-    due_date DATE NOT NULL
+    due_date DATE NOT NULL,
+    CONSTRAINT training_pk PRIMARY KEY (training_id)
 );
 
--- 5. Criação da tabela Enrollment
+-- 5. Tabela Enrollment
 CREATE TABLE enrollment (
-    enrollment_id VARCHAR2(100) NOT NULL PRIMARY KEY,
+    enrollment_id VARCHAR2(100) NOT NULL,
     enrollment_date DATE NOT NULL,
     last_notification_date DATE,
     employee_employee_id VARCHAR2(255) NOT NULL,
     training_training_id VARCHAR2(100) NOT NULL,
-    CONSTRAINT enrollment_employee_FK FOREIGN KEY (employee_employee_id) 
+    CONSTRAINT enrollment_pk PRIMARY KEY (enrollment_id),
+    CONSTRAINT enrollment_employee_fk FOREIGN KEY (employee_employee_id) 
         REFERENCES employee (employee_id),
-    CONSTRAINT enrollment_training_FK FOREIGN KEY (training_training_id) 
+    CONSTRAINT enrollment_training_fk FOREIGN KEY (training_training_id) 
         REFERENCES training (training_id)
 );
 
--- 6. Criação da tabela Completion
+-- 6. Tabela Completion
 CREATE TABLE completion (
-    completion_id VARCHAR2(100) NOT NULL PRIMARY KEY,
+    completion_id VARCHAR2(100) NOT NULL,
     completion_date DATE NOT NULL,
     result VARCHAR2(50) NOT NULL,
     enrollment_enrollment_id VARCHAR2(100),
-    CONSTRAINT completion_enrollment_FK FOREIGN KEY (enrollment_enrollment_id) 
+    CONSTRAINT completion_pk PRIMARY KEY (completion_id),
+    CONSTRAINT completion_enrollment_fk FOREIGN KEY (enrollment_enrollment_id) 
         REFERENCES enrollment (enrollment_id),
-    CONSTRAINT completion_enrollment_UNQ UNIQUE (enrollment_enrollment_id)
+    CONSTRAINT completion_enrollment_uk UNIQUE (enrollment_enrollment_id)
 );
 
--- Index definido na Entity completion
-CREATE INDEX completion_IDX ON completion (enrollment_enrollment_id);
+-- ⚠️ REMOVIDO: índice duplicado (já existe por causa do UNIQUE)
 
--- 7. Criação da tabela Email Outbox
+-- 7. Tabela Email Outbox
 CREATE TABLE email_outbox (
-    id VARCHAR2(255) NOT NULL PRIMARY KEY,
+    id VARCHAR2(255) NOT NULL,
     recipient VARCHAR2(150) NOT NULL,
     subject VARCHAR2(200) NOT NULL,
     body CLOB NOT NULL,
     status VARCHAR2(20) NOT NULL,
     created_at TIMESTAMP NOT NULL,
-    sent_at TIMESTAMP
+    sent_at TIMESTAMP,
+    CONSTRAINT email_outbox_pk PRIMARY KEY (id)
 );
