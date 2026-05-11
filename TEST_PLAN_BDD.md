@@ -31,7 +31,7 @@ Este documento descreve os cenários de teste escritos em linguagem Gherkin util
 
 ---
 
-## Funcionalidade: Listagem de Departamentos (Department Listing)
+## Cenário 3 - Funcionalidade: Listagem de Departamentos (Department Listing)
 **Como** qualquer funcionário  
 **Eu quero** ser capaz de visualizar os departamentos  
 **Para que** eu possa conhecer a estrutura organizacional
