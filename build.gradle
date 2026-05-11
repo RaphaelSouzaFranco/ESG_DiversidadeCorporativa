@@ -36,6 +36,7 @@ dependencies {
 	runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'com.h2database:h2'
 	testImplementation 'io.rest-assured:rest-assured'
 	testImplementation 'io.rest-assured:json-schema-validator'
 	testImplementation 'io.cucumber:cucumber-java:7.16.1'
