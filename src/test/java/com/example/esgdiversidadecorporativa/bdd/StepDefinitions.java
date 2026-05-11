@@ -1,20 +1,22 @@
 package com.example.esgdiversidadecorporativa.bdd;
 
-import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.cucumber.spring.CucumberContextConfiguration;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-
 import java.util.Map;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+// Integração fundamental do Cucumber com o Spring Boot Context
+@CucumberContextConfiguration
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class StepDefinitions {
 
     @LocalServerPort
@@ -22,29 +24,27 @@ public class StepDefinitions {
 
     private Response response;
 
-    @Before
-    public void setup() {
-        RestAssured.port = port;
-    }
-
     @Given("the application is running")
     public void the_application_is_running() {
-        // Validation that the application context is loaded and port is assigned
         assertTrue(port > 0);
 
-        // Ensure department DEP001 exists for tests
-        Response res = RestAssured.given().get("/departments/DEP001");
+        Response res = RestAssured.given()
+                .port(port) // Usando a porta explicitamente
+                .get("/departments/DEP001");
+
         if (res.getStatusCode() == 404) {
             RestAssured.given()
-                .contentType("application/json")
-                .body("{\"departmentId\": \"DEP001\", \"name\": \"Human Resources\"}")
-                .post("/departments");
+                    .port(port)
+                    .contentType("application/json")
+                    .body("{\"departmentId\": \"DEP001\", \"name\": \"Human Resources\"}")
+                    .post("/departments");
         }
     }
 
     @When("I request to create a new employee with the following details:")
     public void i_request_to_create_a_new_employee_with_the_following_details(Map<String, String> employeeDetails) {
         response = RestAssured.given()
+                .port(port) // Usando a porta explicitamente
                 .contentType("application/json")
                 .body(employeeDetails)
                 .when()
@@ -53,6 +53,16 @@ public class StepDefinitions {
 
     @Then("the response status should be {int}")
     public void the_response_status_should_be(int expectedStatus) {
+        // LOG SALVA-VIDAS: Imprime o corpo do erro caso o status não seja o esperado
+        if (response.getStatusCode() != expectedStatus) {
+            System.err.println("============== ERRO NA API ================");
+            System.err.println("Status Esperado: " + expectedStatus);
+            System.err.println("Status Retornado: " + response.getStatusCode());
+            System.err.println("Corpo da Resposta: " + response.getBody().asPrettyString());
+            System.err.println("Teste");
+            System.err.println("=========================================");
+        }
+
         assertEquals(expectedStatus, response.getStatusCode());
     }
 
@@ -65,6 +75,7 @@ public class StepDefinitions {
     @When("I request to get the employee with ID {string}")
     public void i_request_to_get_the_employee_with_id(String id) {
         response = RestAssured.given()
+                .port(port)
                 .when()
                 .get("/employees/" + id);
     }
@@ -72,13 +83,13 @@ public class StepDefinitions {
     @When("I request to get all departments")
     public void i_request_to_get_all_departments() {
         response = RestAssured.given()
+                .port(port)
                 .when()
                 .get("/departments");
     }
 
     @And("the response should be a list")
     public void the_response_should_be_a_list() {
-        // Asserting the root object is a List/Array
         assertTrue(response.jsonPath().getList("").size() >= 0);
     }
 }
