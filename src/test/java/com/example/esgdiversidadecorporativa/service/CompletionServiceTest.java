@@ -11,11 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-<<<<<<< HEAD
-=======
 
-
->>>>>>> aff2036efbcd68508593eaf76c035b63adfc6417
 import java.util.List;
 import java.util.Optional;
 
