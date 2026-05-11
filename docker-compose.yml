@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-version: '3.8'
-=======
-version: "3.9"
->>>>>>> aff2036efbcd68508593eaf76c035b63adfc6417
-
 services:
   db:
     image: gvenzl/oracle-free:latest
@@ -11,21 +5,11 @@ services:
     ports:
       - "1521:1521"
     environment:
-<<<<<<< HEAD
       - ORACLE_PASSWORD=${DB_ROOT_PASSWORD}
       - APP_USER=${DB_APPLICATION_USER}
       - APP_USER_PASSWORD=${DB_APPLICATION_PASSWORD}
-    volumes:
-      - oracle_data:/opt/oracle/oradata
-    networks:
-      - esg_network
-=======
-      ORACLE_PASSWORD: ${ORACLE_PASSWORD}
-      APP_USER: ${APP_USER}
-      APP_USER_PASSWORD: ${APP_USER_PASSWORD}
->>>>>>> aff2036efbcd68508593eaf76c035b63adfc6417
     healthcheck:
-      test: ["CMD", "healthcheck.sh"]
+      test: [ "CMD", "healthcheck.sh" ]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -39,23 +23,7 @@ services:
       db:
         condition: service_healthy
     environment:
-<<<<<<< HEAD
       - SPRING_DATASOURCE_URL=jdbc:oracle:thin:@db:1521/FREEPDB1
       - SPRING_DATASOURCE_USERNAME=${DB_APPLICATION_USER}
       - SPRING_DATASOURCE_PASSWORD=${DB_APPLICATION_PASSWORD}
       - SPRING_FLYWAY_ENABLED=true
-    networks:
-      - esg_network
-
-volumes:
-  oracle_data:
-
-networks:
-  esg_network:
-    driver: bridge
-=======
-      SPRING_DATASOURCE_URL: jdbc:oracle:thin:@db:1521/FREEPDB1
-      SPRING_DATASOURCE_USERNAME: ${APP_USER}
-      SPRING_DATASOURCE_PASSWORD: ${APP_USER_PASSWORD}
-      SPRING_FLYWAY_ENABLED: "true"
->>>>>>> aff2036efbcd68508593eaf76c035b63adfc6417
