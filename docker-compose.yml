@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   db:
     image: gvenzl/oracle-free:latest
@@ -8,6 +10,10 @@ services:
       - ORACLE_PASSWORD=${DB_ROOT_PASSWORD}
       - APP_USER=${DB_APPLICATION_USER}
       - APP_USER_PASSWORD=${DB_APPLICATION_PASSWORD}
+    volumes:
+      - oracle_data:/opt/oracle/oradata
+    networks:
+      - esg_network
     healthcheck:
       test: ["CMD", "healthcheck.sh"]
       interval: 30s
@@ -27,3 +33,12 @@ services:
       - SPRING_DATASOURCE_USERNAME=${DB_APPLICATION_USER}
       - SPRING_DATASOURCE_PASSWORD=${DB_APPLICATION_PASSWORD}
       - SPRING_FLYWAY_ENABLED=true
+    networks:
+      - esg_network
+
+volumes:
+  oracle_data:
+
+networks:
+  esg_network:
+    driver: bridge

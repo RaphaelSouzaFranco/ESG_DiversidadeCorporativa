@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Enrollment",
+  "type": "object",
+  "properties": {
+    "enrollmentId": { "type": "string" },
+    "employeeId": { "type": "string" },
+    "trainingId": { "type": "string" },
+    "enrollmentDate": { "type": ["string", "null"] }
+  },
+  "required": ["enrollmentId", "employeeId", "trainingId"]
+}

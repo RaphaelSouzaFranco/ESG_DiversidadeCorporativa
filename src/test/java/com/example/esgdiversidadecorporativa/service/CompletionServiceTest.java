@@ -11,8 +11,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,7 +38,7 @@ class CompletionServiceTest {
     void setUp() {
         enrollment = new Enrollment();
         enrollment.setEnrollmentId("ENR-1");
-        
+
         completion = new Completion();
         completion.setCompletionId("CMP-1");
         completion.setResult("COMPLETO");
@@ -67,7 +65,7 @@ class CompletionServiceTest {
         when(completionRepository.save(any(Completion.class))).thenReturn(completion);
 
         Completion result = completionService.createCompletion(completion);
-        
+
         assertNotNull(result);
         assertEquals("COMPLETO", result.getResult());
         verify(completionRepository, times(1)).save(completion);
@@ -78,36 +76,36 @@ class CompletionServiceTest {
         completion.setEnrollment(null);
         assertThrows(IllegalArgumentException.class, () -> completionService.createCompletion(completion));
     }
-    
+
     @Test
     void testCreateCompletionEnrollmentNotFound() {
         when(enrollmentRepository.findById("ENR-1")).thenReturn(Optional.empty());
         assertThrows(EntityNotFoundException.class, () -> completionService.createCompletion(completion));
     }
-    
+
     @Test
     void testCreateCompletionAlreadyExists() {
         enrollment.setCompletion(new Completion());
         when(enrollmentRepository.findById("ENR-1")).thenReturn(Optional.of(enrollment));
         assertThrows(IllegalStateException.class, () -> completionService.createCompletion(completion));
     }
-    
+
     @Test
     void testUpdateCompletionSuccess() {
         when(completionRepository.findById("CMP-1")).thenReturn(Optional.of(completion));
         when(completionRepository.save(any(Completion.class))).thenReturn(completion);
-        
+
         Completion updated = new Completion();
         updated.setResult("APROVADO");
-        
+
         Completion result = completionService.updateCompletion("CMP-1", updated);
         assertEquals("APROVADO", result.getResult());
     }
-    
+
     @Test
     void testDeleteCompletionSuccess() {
         when(completionRepository.findById("CMP-1")).thenReturn(Optional.of(completion));
-        
+
         assertDoesNotThrow(() -> completionService.deleteCompletion("CMP-1"));
         verify(completionRepository, times(1)).delete(completion);
         assertNull(enrollment.getCompletion());

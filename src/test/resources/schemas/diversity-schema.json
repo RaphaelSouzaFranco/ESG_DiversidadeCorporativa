@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Diversity",
+  "type": "object",
+  "properties": {
+    "diversityId": { "type": "string" },
+    "metricName": { "type": "string" },
+    "value": { "type": ["number", "string", "null"] }
+  },
+  "required": ["diversityId", "metricName"]
+}

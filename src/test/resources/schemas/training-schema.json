@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Training",
+  "type": "object",
+  "properties": {
+    "trainingId": { "type": "string" },
+    "title": { "type": "string" },
+    "description": { "type": ["string", "null"] }
+  },
+  "required": ["trainingId", "title"]
+}

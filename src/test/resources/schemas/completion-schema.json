@@ -1,0 +1,12 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Completion",
+  "type": "object",
+  "properties": {
+    "completionId": { "type": "string" },
+    "enrollmentId": { "type": "string" },
+    "completionDate": { "type": ["string", "null"] },
+    "score": { "type": ["number", "null"] }
+  },
+  "required": ["completionId", "enrollmentId"]
+}
