@@ -25,7 +25,7 @@ public class DiversityApiTest {
     public void testGetDiversityMetrics_ShouldReturn200() {
         given()
             .when()
-                .get("/diversity")
+                .get("/diversities")
             .then()
                 .statusCode(200)
                 .body("$", isA(java.util.List.class))

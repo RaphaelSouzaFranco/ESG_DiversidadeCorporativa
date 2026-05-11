@@ -31,6 +31,15 @@ public class StepDefinitions {
     public void the_application_is_running() {
         // Validation that the application context is loaded and port is assigned
         assertTrue(port > 0);
+
+        // Ensure department DEP001 exists for tests
+        Response res = RestAssured.given().get("/departments/DEP001");
+        if (res.getStatusCode() == 404) {
+            RestAssured.given()
+                .contentType("application/json")
+                .body("{\"departmentId\": \"DEP001\", \"name\": \"Human Resources\"}")
+                .post("/departments");
+        }
     }
 
     @When("I request to create a new employee with the following details:")

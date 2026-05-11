@@ -9,7 +9,7 @@ Feature: Employee Management
       | employeeId  | EMP001            |
       | name        | John Doe          |
       | email       | john.doe@esg.com  |
-      | gender      | Male              |
+      | gender      | M                 |
       | departmentId| DEP001            |
     Then the response status should be 200
     And the response body should contain the created employee details
